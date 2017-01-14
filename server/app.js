@@ -1,6 +1,7 @@
 var express = require('express');
 var db = require('./db');
 
+
 // Middleware
 var morgan = require('morgan');
 var parser = require('body-parser');
@@ -30,3 +31,6 @@ if (!module.parent) {
   console.log('Listening on', app.get('port'));
 }
 
+
+// db.dbConnection.connect();
+// db.connectToServer();

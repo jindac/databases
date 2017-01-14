@@ -28,12 +28,22 @@ describe('Persistent Node Chat Server', function() {
   });
 
   it('Should insert posted messages to the DB', function(done) {
+    console.log('GET TO FIRST TEST CASE');
     // Post the user to the chat server.
     request({
       method: 'POST',
       uri: 'http://127.0.0.1:3000/classes/users',
       json: { username: 'Valjean' }
     }, function () {
+      console.log('got through first post: results are ...');
+
+      // dbConnection.query('SELECT * FROM users', function(err, results) {
+      //   if (err) {
+      //     console.error(err);
+      //   }
+      //   console.log(results);
+      // });
+
       // Post a message to the node chat server:
       request({
         method: 'POST',
@@ -44,6 +54,15 @@ describe('Persistent Node Chat Server', function() {
           roomname: 'Hello'
         }
       }, function () {
+        console.log('got to callback function');
+        
+        dbConnection.query('SELECT * FROM messages', function(err, results) {
+          if (err) {
+            console.error(err);
+          }
+          console.log(results);
+        });
+
         // Now if we look in the database, we should find the
         // posted message there.
 
