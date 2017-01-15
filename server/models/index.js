@@ -3,9 +3,6 @@ var db = require('../db');
 module.exports = {
   messages: {
     get: function (req, res) {
-      console.log('is the RES undefined?');
-      console.log(res);
-
       db.getMessages(res);
       // res.json(db.getMessages());
       // res.end();

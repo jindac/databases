@@ -71,9 +71,7 @@ exports.getRooms = function() {
 };
 
 exports.getMessages = function(res) {
-  console.log("ENTERED GET MESSAGES DB");
   dbConnection.query('select * from messages', function(err, result) {
-    console.log('ABOUT TO ENTER RES.JSON');
     res.json(result);
   });
 
