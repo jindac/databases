@@ -3,22 +3,32 @@ var models = require('../models');
 module.exports = {
   messages: {
     get: function (req, res) {
-      console.log('messages GET');
-    }, // a function which handles a get request for all messages
+      models.messages.get(req, res);
+    },
     post: function (req, res) {
-      console.log('messages POST');
       models.messages.post(req, res);
-    } // a function which handles posting a message to the database
+    }
   },
 
   users: {
     // Ditto as above
     get: function (req, res) {
-      console.log('users GET');
+      models.users.get(req, res);
     },
     post: function (req, res) {
       models.users.post(req, res);
     }
-  }
+  },
+
+  rooms: {
+    get: function (req, res) {
+      models.users.get(req, res);
+    },
+    post: function (req, res) {
+      console.log('POST ROOMS CONTROLLER');
+      console.log('room ====>', req.body.roomname);
+      models.rooms.post(req, res);
+    }
+  },
 };
 

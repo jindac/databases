@@ -15,21 +15,22 @@ dbConnection.connect();
 
 
 exports.postUser = function(username) {
-  // construct SQL string
-  //insert into users (name) value ('user1');
-  dbConnection.query('INSERT INTO users (name) value (\'' + username + '\')', function(err, res) {
-  
+
+  dbConnection.query('INSERT INTO users (name) value (\'' + username + '\')', function(err, res) {  
     if (err) {
       console.error(err);
     }
-    console.log('INSERTION WORKED');
-    // console.log('last insert id: ');
+    console.log('posted ' + username);
   });
+};
 
-  console.log('user INSIDE DB INDEX');
-  console.log(username);
-  // res.end();
-  //WRITE SOME SQL
+exports.postRoom = function(roomname) {
+  dbConnection.query('INSERT INTO rooms (name) value (\'' + roomname + '\')', function(err, res) {  
+    if (err) {
+      console.error(err);
+    }
+    console.log('posted ' + roomname);
+  });
 };
 
 exports.postMessage = function(body) {
@@ -42,28 +43,41 @@ exports.postMessage = function(body) {
     return char;
   }).join('');
 
-
   var user = body.username;
-  var room = body.roomname;
+  var room = body.roomname; 
+  // var userId;
+  // var roomId;
+  // var createdAt;
 
-  dbConnection.query('SELECT u.id FROM users u WHERE u.name = \'' + user + '\'', function(err, res) {
-    if (err) {
-      console.error(err);
-    }
-    console.log('results ===>', res);
-  });
 
-  // var user_id, room_id;
-  var createdAt;
+  // var queryString = 'INSERT INTO messages (text) value (\'' + message + '\')';
+  var queryString = 'INSERT INTO messages (user_id, room_id, text) value ' + 
+    '((select id from users where name = \'' + user + '\'),(select id from rooms where name = \'' + room + '\'),\'' + message + '\');';
 
-  // dbConnection.query('INSERT INTO messages (user_id, room_id, text, createdAt) value (1, 1, \'' + message + '\', 1)', function(err, res) {
-  var queryString = 'INSERT INTO messages (text) value (\'' + message + '\')';
-  // console.log('queryString ===> ', message);
   dbConnection.query(queryString, function(err, res) {
     if (err) {
       console.error(err);
     }
-    console.log('Message INSERTION WORKED');
-    // console.log('last insert id: ');
+    console.log('posted ' + message);
   });
+};
+
+exports.getUsers = function() {
+  console.log('this gets users.');
+};
+
+exports.getRooms = function() {
+  console.log('this gets rooms.');
+};
+
+exports.getMessages = function(res) {
+  console.log("ENTERED GET MESSAGES DB");
+  dbConnection.query('select * from messages', function(err, result) {
+    console.log('ABOUT TO ENTER RES.JSON');
+    res.json(result);
+  });
+
+  // return dbConnection.query('select * from messages', function(err, res) {
+  //   return res;
+  // });
 };
